@@ -1,22 +1,22 @@
 @echo off
 
-if not exist "%~dp0output" mkdir "%~dp0output"
-if not exist "%~dp0output\txt" mkdir "%~dp0output\txt"
-for %%f in (*.pdf) do (
-    magick "%%f" -quality 100 "./output/%%~nf.tif"
+::Create Directories
+if not exist "%CD%\output" mkdir "%CD%\output"
+if not exist "%CD%\output\txt" mkdir "%CD%\output\txt"
+
+::Loop through all pdf files and convert to tif
+for %%f in ("%CD%\*.pdf") do (
+    magick "%%f" -quality 100 -scene 1 "%CD%/output/%%~nf-%%d.tif"
 )
 
-cd output
+::Loop through all tifs and extract txt using tesseract into individual txt files and a master file
+for %%f in ("%CD%\output\*.tif") do (
 
-for %%f in ("*.tif") do (
-
-    @echo "----------------------------------------------------------" >> "./master.txt"
-    @echo %%f >> "./master.txt"
-    @echo "----------------------------------------------------------" >> "./master.txt"
-    tesseract "%%f" stdout >> "./master.txt"
-    tesseract "%%f" stdout > "./txt/%%~nf.txt"
-    @echo "" >> "./master.txt"
-    @echo "" >> "./master.txt"
+    @echo "----------------------------------------------------------" >> "%CD%/output/master.txt"
+    @echo %%f >> "%CD%/output/master.txt"
+    @echo "----------------------------------------------------------" >> "%CD%/output/master.txt"
+    tesseract "%%f" stdout >> "%CD%/output/master.txt"
+    tesseract "%%f" stdout > "%CD%/output/txt/%%~nf.txt"
+    @echo "" >> "%CD%/output/master.txt"
+    @echo "" >> "%CD%/output/master.txt"
 )
-
-cd ../
