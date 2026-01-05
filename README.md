@@ -10,5 +10,5 @@ Batch files I find useful
   - run both sfc /scannow and DISM scan for fixing system files
 - php_server.bat
   - start php server for development
-- randbpass.bat
+- randpass.bat
   - generate random password via powershell
